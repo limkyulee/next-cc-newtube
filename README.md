@@ -1,7 +1,5 @@
 # YouTube Clone
 
-![thumbnail](https://img.youtube.com/vi/ArmPzvHTcfQ/maxresdefault.jpg)
-
 Next.js, Drizzle ORM, 최신 UI 라이브러리들로 제작된 현대적인 유튜브 클론입니다.
 고급 영상 처리, 실시간 자막 생성, 반응형 디자인 등 **실제 서비스에 가까운 기능들을 직접 구현해볼 수 있습니다**.
 
@@ -28,7 +26,7 @@ Next.js, Drizzle ORM, 최신 UI 라이브러리들로 제작된 현대적인 유
 
 ## 필수 요구사항
 
--	Node.js 18 이상 또는 Bun 1.0 이상
+-	Bun 1.0 이상
 -	PostgreSQL 혹은 NeonDB 계정
 -	Mux 계정 – 실시간 영상 처리에 사용
 -	OpenAI API Key – AI 기반 제목/설명 생성 기능에 필요
@@ -44,18 +42,6 @@ Next.js, Drizzle ORM, 최신 UI 라이브러리들로 제작된 현대적인 유
 ```bash
 # Install dependencies
 bun install
-
-# Copy environment variables
-cp .env.example .env
-```
-
-#### Using npm
-
-```bash
-# Install dependencies
-npm install
-# If you get errors try
-npm install --legacy-peer-deps
 
 # Copy environment variables
 cp .env.example .env
@@ -105,8 +91,6 @@ tsx src/scripts/seed-categories.ts
 # Using Bun
 bun run dev:all
 
-# Using npm
-npm run dev:all
 ```
 
 브라우저에서 [http://localhost:3000](http://localhost:3000)로 접속하여 결과를 확인하세요.
