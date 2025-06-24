@@ -1,14 +1,12 @@
-"use client"
+import { trpc } from "@/trpc/server";
 
-import { trpc } from "@/trpc/client";
+export default async function Home() {
 
-export default function Home() {
-
-  const { data } = trpc.hello.useQuery({ text: "Kyuleelim" })
+  const data = await trpc.hello({ text: "Kyuleelim" })
 
   return (
     <div>
-      Client component say : {data?.greeting}
+      Client component say : {data.greeting}
     </div>
   );
 }
