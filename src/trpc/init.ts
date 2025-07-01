@@ -1,10 +1,12 @@
 import { db } from '@/db';
 import { users } from '@/db/schema';
+import { ratelimit } from '@/lib/ratelimit';
 import { auth } from '@clerk/nextjs/server';
 import { initTRPC, TRPCError } from '@trpc/server';
 import { eq } from 'drizzle-orm';
 import { cache } from 'react';
 import superjson from 'superjson'
+
 
 /**
  * @see TRPC Context 생성
@@ -55,6 +57,13 @@ export const protectedProcedure = t.procedure.use(async function isAuthed(opts) 
   
   if(!user) {
     throw new TRPCError({code: "UNAUTHORIZED"})
+  }
+
+  // Rate limit 발생할 경우 TOO_MANY_REQUESTS [Exception]
+  const {success} = await ratelimit.limit(user.id)
+
+  if(!success){
+    throw new TRPCError({code: 'TOO_MANY_REQUESTS'})
   }
 
   // 로그인 한 유저가 있는 경우 다음 단계 진행
