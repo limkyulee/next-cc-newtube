@@ -1,5 +1,8 @@
+import { db } from '@/db';
+import { users } from '@/db/schema';
 import { auth } from '@clerk/nextjs/server';
 import { initTRPC, TRPCError } from '@trpc/server';
+import { eq } from 'drizzle-orm';
 import { cache } from 'react';
 import superjson from 'superjson'
 
@@ -44,10 +47,21 @@ export const protectedProcedure = t.procedure.use(async function isAuthed(opts) 
     throw new TRPCError({ code: "UNAUTHORIZED" })
   }
 
+  const [user] = await db
+    .select()
+    .from(users)
+    .where(eq(users.clerkId, ctx.clerkUserId))
+    .limit(1);
+  
+  if(!user) {
+    throw new TRPCError({code: "UNAUTHORIZED"})
+  }
+
   // 로그인 한 유저가 있는 경우 다음 단계 진행
   return opts.next({
     ctx: {
-      ...ctx
+      ...ctx,
+      user
     }
   })
 })

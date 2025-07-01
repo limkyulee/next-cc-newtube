@@ -5,6 +5,7 @@ import { WebhookEvent } from '@clerk/nextjs/server'
 
 import { db } from '@/db'
 import { users } from '@/db/schema'
+import { log } from 'console'
 
 export async function POST(req: Request) {
   const SIGNING_SECRET = process.env.CLERK_SIGNING_SECRET
@@ -52,7 +53,7 @@ export async function POST(req: Request) {
   // Do something with payload
   // For this guide, log payload to console
   const eventType = evt.type
-  
+
   if (eventType === "user.created") {
     const { data } = evt
 

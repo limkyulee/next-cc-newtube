@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { baseProcedure, createTRPCRouter } from '../init';
+import { protectedProcedure, createTRPCRouter, baseProcedure } from '../init';
 
 /**
  * @see API(procedure) 를 담는 라우터
@@ -12,14 +12,14 @@ export const appRouter = createTRPCRouter({
    * @z.object 타입과 형식을 검사
    * @query API 실행 방식
    */
-  hello: baseProcedure
+  hello: protectedProcedure
     .input(
       z.object({
         text: z.string(),
       }),
     )
     .query((opts) => {
-      console.log({ fromContext: opts.ctx.clerkUserId })
+      console.log({ dbUser: opts.ctx.clerkUserId })
 
       return {
         greeting: `hello ${opts.input.text}`,
