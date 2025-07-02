@@ -54,16 +54,16 @@ export const protectedProcedure = t.procedure.use(async function isAuthed(opts) 
     .from(users)
     .where(eq(users.clerkId, ctx.clerkUserId))
     .limit(1);
-  
-  if(!user) {
-    throw new TRPCError({code: "UNAUTHORIZED"})
+
+  if (!user) {
+    throw new TRPCError({ code: "UNAUTHORIZED" })
   }
 
   // Rate limit 발생할 경우 TOO_MANY_REQUESTS [Exception]
-  const {success} = await ratelimit.limit(user.id)
+  const { success } = await ratelimit.limit(user.id)
 
-  if(!success){
-    throw new TRPCError({code: 'TOO_MANY_REQUESTS'})
+  if (!success) {
+    throw new TRPCError({ code: 'TOO_MANY_REQUESTS' })
   }
 
   // 로그인 한 유저가 있는 경우 다음 단계 진행
